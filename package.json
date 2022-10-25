@@ -1,6 +1,6 @@
 {
   "name": "@daeinc/timeline",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A wrapper class on top of keyframes package",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
