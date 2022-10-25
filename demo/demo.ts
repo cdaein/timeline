@@ -19,3 +19,5 @@ const easeInQuad = (a: Keyframe, b: Keyframe, t: number) => {
 
 const v2 = tl.value("position", 0.5, easeInQuad);
 console.log(v2); // 6.25
+
+const tlJson = Timeline.fromJSON("./data.json");

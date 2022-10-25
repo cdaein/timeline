@@ -334,4 +334,33 @@ export default class Timeline {
   // getIndex(propName: string, timeStamp: number) {
   //   return this.nearestIndex(propName, timeStamp, 0);
   // }
+
+  static fromJSON(file: string) {
+    // import JSON file
+    fetch(file)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((e) => console.error(e));
+
+    // 1. parse JSON as string
+
+    // 2. set timeline name
+    // 3. set properties
+    //  - set property name
+    //  - set property keyframes
+    //    - convert to KeyframesFull object
+  }
+
+  // TODO: create a type/interface for JS data
+  static fromArray(data: object[]) {
+    //
+  }
+
+  toJSON() {
+    //
+  }
 }
