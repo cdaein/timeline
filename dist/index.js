@@ -14,7 +14,8 @@ class Timeline {
      * @param propOrProps a single or multiple properties. ex. { name: 'circle', keyframes: {time, value} }
      * @returns Timeline object
      */
-    constructor(propOrProps) {
+    constructor(name, propOrProps) {
+        this.name = name; // name of this timeline
         if (propOrProps !== undefined) {
             if (Array.isArray(propOrProps)) {
                 // InputProp[]
@@ -134,6 +135,20 @@ class Timeline {
             return prop.keyframes;
         }
         throw new Error(`Timeline.getKeyframes(): cannot find prop: ${propName}`);
+    }
+    /**
+     * return the name of this timeline
+     * @returns name of this timeline
+     */
+    getName() {
+        return this.name;
+    }
+    /**
+     * returns all property names
+     * @returns array of property names
+     */
+    getPropertyNames() {
+        return this.properties.map((prop) => prop.name);
     }
     /**
      * calculate value at timestamp with optional easing.

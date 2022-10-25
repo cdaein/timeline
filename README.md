@@ -20,10 +20,10 @@ import Timeline from "@daeinc/timeline";
 
 ## Examples
 
-Pass a single property object (`{name, keyframes}`) or an array of property objects:
+Pass a timeline name and a single property object (`{name, keyframes}`) or an array of property objects (`[{name, keyframes}, {name, keyframes}]`):
 
 ```js
-const tl = new Timeline({
+const tl = new Timeline("my-timeline", {
   name: "position",
   keyframes: [
     { time: 0, value: 5 },
@@ -75,6 +75,10 @@ getKeyframe(propName: string, timeStamp: number): Keyframe;
 
 getKeyframes(propName: string): Keyframe[];
 
+getName(): string;
+
+getPropertyNames(): string[];
+
 value(propName: string, timeStamp: number, interpolator?: Interpolator): any;
 
 addProperty(propName: string, ...newKeys: Keyframe[]): void;
@@ -92,9 +96,10 @@ previous(propName: string, timeStamp: number): Keyframe;
 
 ## To Dos
 
+- implement the rest of the methods from `keyframes` package
+- implement `Timeline.fromJSON()` and `Timeline.toJSON()`
 - add a separate `.d.ts` for `keyframes` JS package, or, create a TS version of the keyframes package as a `class`.
 - throw errors or return null or guard against?
-- implement the rest of the methods from `keyframes` package
 
 ## License
 

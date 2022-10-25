@@ -64,13 +64,16 @@ export type Interpolator = (
 ) => any;
 
 export default class Timeline {
+  name: string;
   properties: InternalProp[];
 
   /**
    * @param propOrProps a single or multiple properties. ex. { name: 'circle', keyframes: {time, value} }
    * @returns Timeline object
    */
-  constructor(propOrProps?: InputProp | InputProp[]) {
+  constructor(name: string, propOrProps?: InputProp | InputProp[]) {
+    this.name = name; // name of this timeline
+
     if (propOrProps !== undefined) {
       if (Array.isArray(propOrProps)) {
         // InputProp[]
@@ -195,6 +198,22 @@ export default class Timeline {
       return prop.keyframes;
     }
     throw new Error(`Timeline.getKeyframes(): cannot find prop: ${propName}`);
+  }
+
+  /**
+   * return the name of this timeline
+   * @returns name of this timeline
+   */
+  getName(): string {
+    return this.name;
+  }
+
+  /**
+   * returns all property names
+   * @returns array of property names
+   */
+  getPropertyNames(): string[] {
+    return this.properties.map((prop) => prop.name);
   }
 
   /**

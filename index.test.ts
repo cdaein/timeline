@@ -23,19 +23,21 @@ const prop4 = {
   ],
 };
 
+const name = "rect-1";
+
 // with no properties
-const tl1 = new Timeline();
-const tl2 = new Timeline([]);
+const tl1 = new Timeline(name);
+const tl2 = new Timeline(name, []);
 
 // single property object
-const tl3 = new Timeline(prop1);
-const tl4 = new Timeline(prop3);
+const tl3 = new Timeline(name, prop1);
+const tl4 = new Timeline(name, prop3);
 
 // with properties array + keyframes
-const tl5 = new Timeline([prop1]);
-const tl6 = new Timeline([prop2]);
-const tl7 = new Timeline([prop3]);
-const tl8 = new Timeline([prop3, prop4]);
+const tl5 = new Timeline(name, [prop1]);
+const tl6 = new Timeline(name, [prop2]);
+const tl7 = new Timeline(name, [prop3]);
+const tl8 = new Timeline(name, [prop3, prop4]);
 
 const linear: Interpolator = (a: any, b: any, t: number) =>
   mix(a.value, b.value, t);
@@ -86,7 +88,7 @@ describe("addKeyframe()", () => {
     expect(tl2.properties[0].keyframes.frames[0].value).toEqual(0.5);
   });
   test("adds a new keyframe to an existing property", () => {
-    const tl = new Timeline({
+    const tl = new Timeline(name, {
       name: "position",
       keyframes: [{ time: 1, value: 5 }],
     });
@@ -96,7 +98,7 @@ describe("addKeyframe()", () => {
     expect(tl.properties[0].keyframes.frames[1].value).toBe(10);
   });
   test("replaces a keyframe if timeStamp is the same", () => {
-    const tl = new Timeline({
+    const tl = new Timeline(name, {
       name: "position",
       keyframes: [{ time: 1, value: 5 }],
     });
@@ -106,7 +108,7 @@ describe("addKeyframe()", () => {
     expect(tl.properties[0].keyframes.frames[0].value).toBe(10);
   });
   test("handles an optional filed (ease) in a keyframe", () => {
-    const tl = new Timeline({
+    const tl = new Timeline(name, {
       name: "position",
       keyframes: [{ time: 1, value: 5 }],
     });
@@ -118,7 +120,7 @@ describe("addKeyframe()", () => {
 
 describe("addKeyframes()", () => {
   test("adds multiple new keyframes in one call", () => {
-    const tl = new Timeline();
+    const tl = new Timeline(name);
     tl.addKeyframes("position", { time: 0, value: 1 }, { time: 1, value: 10 });
     expect(tl.properties[0].name).toEqual("position");
     expect(tl.properties[0].keyframes.frames.length).toEqual(2);
@@ -127,7 +129,7 @@ describe("addKeyframes()", () => {
 });
 
 describe("getKeyframe()", () => {
-  const tl = new Timeline({
+  const tl = new Timeline(name, {
     name: "position",
     keyframes: [
       { time: 1, value: 5 },
@@ -148,11 +150,11 @@ describe("getKeyframe()", () => {
 
 describe("getKeyframes()", () => {
   test("returns keyframes object", () => {
-    const tl = new Timeline({
+    const tl = new Timeline(name, {
       name: "position",
       keyframes: [],
     });
-    const tl2 = new Timeline({
+    const tl2 = new Timeline(name, {
       name: "position",
       keyframes: [
         { time: 1, value: 5 },
@@ -167,8 +169,20 @@ describe("getKeyframes()", () => {
   });
 });
 
+describe("getName()", () => {
+  test("returns name of timeline", () => {
+    expect(tl1.getName()).toEqual("rect-1");
+  });
+});
+
+describe("getPropertyNames()", () => {
+  test("returns name of all properties", () => {
+    expect(tl8.getPropertyNames()).toEqual(["position", "color"]);
+  });
+});
+
 describe("value()", () => {
-  const tl = new Timeline({
+  const tl = new Timeline(name, {
     name: "position",
     keyframes: [
       { time: 0, value: 5 },
@@ -190,7 +204,7 @@ describe("value()", () => {
 });
 
 describe("addProperty()", () => {
-  const tl = new Timeline({
+  const tl = new Timeline(name, {
     name: "position",
     keyframes: [
       { time: 0, value: 5 },
@@ -226,7 +240,7 @@ describe("addProperty()", () => {
 
 describe("removeKeyframes()", () => {
   test("removes single keyframe", () => {
-    const tl = new Timeline({
+    const tl = new Timeline(name, {
       name: "position",
       keyframes: [
         { time: 0, value: 5 },
@@ -243,7 +257,7 @@ describe("removeKeyframes()", () => {
     });
   });
   test("removes multiple keyframes", () => {
-    const tl = new Timeline({
+    const tl = new Timeline(name, {
       name: "position",
       keyframes: [
         { time: 0, value: 5 },
@@ -260,7 +274,7 @@ describe("removeKeyframes()", () => {
     });
   });
   test("returns empty [] when keyframes are empty", () => {
-    const tl = new Timeline({
+    const tl = new Timeline(name, {
       name: "position",
       keyframes: [{ time: 0, value: 5 }],
     });
@@ -271,7 +285,7 @@ describe("removeKeyframes()", () => {
 });
 
 describe("nearest()", () => {
-  const tl = new Timeline({
+  const tl = new Timeline(name, {
     name: "position",
     keyframes: [
       { time: 0, value: 5 },
@@ -289,7 +303,7 @@ describe("nearest()", () => {
 });
 
 describe("nearestIndex()", () => {
-  const tl = new Timeline({
+  const tl = new Timeline(name, {
     name: "position",
     keyframes: [
       { time: 0, value: 5 },
@@ -306,7 +320,7 @@ describe("nearestIndex()", () => {
   });
 });
 describe("next()", () => {
-  const tl = new Timeline({
+  const tl = new Timeline(name, {
     name: "position",
     keyframes: [
       { time: 0, value: 5 },
@@ -323,7 +337,7 @@ describe("next()", () => {
   });
 });
 describe("previous()", () => {
-  const tl = new Timeline({
+  const tl = new Timeline(name, {
     name: "position",
     keyframes: [
       { time: 0, value: 5 },
@@ -341,7 +355,7 @@ describe("previous()", () => {
 });
 
 // describe("get()", () => {
-//   const tl = new Timeline({
+//   const tl = new Timeline(name, {
 //     name: "position",
 //     keyframes: [
 //       { time: 0, value: 5 },

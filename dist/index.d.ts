@@ -42,12 +42,13 @@ interface InternalProp extends Prop {
 }
 export declare type Interpolator = (a: Keyframe, b: Keyframe, t: number, out?: any[]) => any;
 export default class Timeline {
+    name: string;
     properties: InternalProp[];
     /**
      * @param propOrProps a single or multiple properties. ex. { name: 'circle', keyframes: {time, value} }
      * @returns Timeline object
      */
-    constructor(propOrProps?: InputProp | InputProp[]);
+    constructor(name: string, propOrProps?: InputProp | InputProp[]);
     _convertToKeyframesFull(arr: Keyframe[]): KeyframesFull;
     /**
      * REVIEW:
@@ -95,6 +96,16 @@ export default class Timeline {
      * @returns keyframes object
      */
     getKeyframesFull(propName: string): KeyframesFull;
+    /**
+     * return the name of this timeline
+     * @returns name of this timeline
+     */
+    getName(): string;
+    /**
+     * returns all property names
+     * @returns array of property names
+     */
+    getPropertyNames(): string[];
     /**
      * calculate value at timestamp with optional easing.
      * @param propName

@@ -2,7 +2,7 @@ import Timeline from "../index";
 import { lerp } from "@daeinc/math";
 import type { Keyframe } from "../index";
 
-const tl = new Timeline({
+const tl = new Timeline("my-timeline", {
   name: "position",
   keyframes: [
     { time: 0, value: 5 },
