@@ -26,13 +26,17 @@ console.log(v2); // 6.25
 const main = async () => {
   const tl2 = (await Timeline.fromJSON("./single.json")) as Timeline;
   const val = tl2.value("position", 0.5);
-  console.log("Timeline.fromJSON().value()", val);
-};
+  console.log("JSON to Timeline", val);
 
+  const backToJson = tl2.toJSON();
+  const tl3 = Timeline.from(JSON.parse(backToJson));
+  const v3 = tl3.value("position", 0.5);
+  console.log("JSON to Timeline to JSON to Timeline", v3);
+};
 main();
 
-const tl3 = Timeline.from(single);
-const v3 = tl3.value("position", 0.5);
-console.log("Timeline.from().value()", v3);
+const tl4 = Timeline.from(single);
+const v4 = tl4.value("position", 0.5);
+console.log("Timeline.from().value()", v4);
 
 // TODO: handle importing JSON with multiple timelines

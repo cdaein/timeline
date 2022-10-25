@@ -98,8 +98,8 @@ export default class Timeline {
     return Keyframes(arr);
   }
 
-  _convertToKeyframesInput(arr: KeyframesFull[]): Keyframe[] {
-    return [];
+  _convertToKeyframesInput(data: KeyframesFull): Keyframe[] {
+    return data.frames;
   }
 
   /**
@@ -374,16 +374,18 @@ export default class Timeline {
     return new Timeline(name, properties);
   }
 
-  // TODO: implement
+  /**
+   * returns JSON string
+   * @returns JSON string
+   */
   toJSON() {
-    const inputKeyframes = this._convertToKeyframesInput([]);
-
-    // get Timeline name
-    // for each property
-    //   get propName
-    //   get keyframes => convert back to regular array
-    // convert to object format
-    // return as string
-    return "";
+    const inputProps = this.properties.map(
+      (prop) =>
+        ({
+          name: prop.name,
+          keyframes: this._convertToKeyframesInput(prop.keyframes),
+        } as InputProp)
+    );
+    return JSON.stringify({ name: this.name, properties: inputProps });
   }
 }
