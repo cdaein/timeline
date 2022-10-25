@@ -92,12 +92,20 @@ nearestIndex(propName: string, timeStamp: number, radius?: number): number;
 next(propName: string, timeStamp: number): Keyframe;
 
 previous(propName: string, timeStamp: number): Keyframe;
+
+static fromJSON(file: string): Promise<void | Timeline>;
+
+static from(data: {
+  name: string;
+  properties: InputProp[];
+}): Timeline;
+
+toJSON(): string;
 ```
 
 ## To Dos
 
 - implement the rest of the methods from `keyframes` package
-- implement `Timeline.fromJSON()` and `Timeline.toJSON()`
 - add a separate `.d.ts` for `keyframes` JS package, or, create a TS version of the keyframes package as a `class`.
 - throw errors or return null or guard against?
 

@@ -50,6 +50,7 @@ export default class Timeline {
      */
     constructor(name: string, propOrProps?: InputProp | InputProp[]);
     _convertToKeyframesFull(arr: Keyframe[]): KeyframesFull;
+    _convertToKeyframesInput(data: KeyframesFull): Keyframe[];
     /**
      * REVIEW:
      * - I don't want to expose KeyframesFull object
@@ -179,6 +180,10 @@ export default class Timeline {
         name: string;
         properties: InputProp[];
     }): Timeline;
+    /**
+     * returns JSON string
+     * @returns JSON string
+     */
     toJSON(): string;
 }
 export {};

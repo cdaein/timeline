@@ -384,3 +384,17 @@ describe("fromJSON()", () => {
     // expect().toEqual()
   });
 });
+
+describe("toJSON()", () => {
+  test("convert data to JSON format", () => {
+    // TODO
+    // expect().toEqual()
+  });
+});
+
+describe("from()", () => {
+  test("create a new Timeline object from JS data object", () => {
+    // TODO
+    // expect().toEqual()
+  });
+});

@@ -40,6 +40,9 @@ class Timeline {
     _convertToKeyframesFull(arr) {
         return Keyframes(arr);
     }
+    _convertToKeyframesInput(data) {
+        return data.frames;
+    }
     /**
      * REVIEW:
      * - I don't want to expose KeyframesFull object
@@ -292,9 +295,16 @@ class Timeline {
         const properties = data.properties;
         return new Timeline(name, properties);
     }
-    // TODO: implement
+    /**
+     * returns JSON string
+     * @returns JSON string
+     */
     toJSON() {
-        return "";
+        const inputProps = this.properties.map((prop) => ({
+            name: prop.name,
+            keyframes: this._convertToKeyframesInput(prop.keyframes),
+        }));
+        return JSON.stringify({ name: this.name, properties: inputProps });
     }
 }
 exports.default = Timeline;
