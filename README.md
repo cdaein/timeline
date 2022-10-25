@@ -12,27 +12,29 @@ In development, and may not work properly.
 npm i @daeinc/timeline
 ```
 
+Then,
+
 ```js
 import Timeline from "@daeinc/timeline";
 ```
 
 ## Examples
 
+Pass a single property object (`{name, keyframes}``) or an array of property objects:
+
 ```js
-const tl = new Timeline([
-  {
-    name: "position",
-    keyframes: [
-      { time: 0, value: 5 },
-      { time: 1, value: 10 },
-    ],
-  },
-]);
+const tl = new Timeline({
+  name: "position",
+  keyframes: [
+    { time: 0, value: 5 },
+    { time: 1, value: 10 },
+  ],
+});
 
 const v1 = tl.value("position", 0.5); // returns 7.5
 ```
 
-Pass a custom interpolator function.
+Pass a custom interpolator function:
 
 JS:
 
@@ -56,6 +58,24 @@ const easeInQuad = (a: Keyframe, b: Keyframe, t: number) => {
 
 const v2 = tl.value("position", 0.5, easeInQuad);
 console.log(v2); // 6.25
+```
+
+## Methods
+
+```ts
+constructor(propOrProps?: InputProp | InputProp[]);
+propExists(propName: string): boolean;
+addKeyframe(propName: string, newKey: Keyframe): void;
+addKeyframes(propName: string, ...newKeys: Keyframe[]): void;
+getKeyframe(propName: string, timeStamp: number): Keyframe;
+getKeyframes(propName: string): Keyframe[];
+value(propName: string, timeStamp: number, interpolator?: Interpolator): any;
+addProperty(propName: string, ...newKeys: Keyframe[]): void;
+removeKeyframes(propName: string, index: number, howmany: number): void;
+nearest(propName: string, timeStamp: number, radius?: number): Keyframe;
+nearestIndex(propName: string, timeStamp: number, radius?: number): number;
+next(propName: string, timeStamp: number): Keyframe;
+previous(propName: string, timeStamp: number): Keyframe;
 ```
 
 ## To Dos
