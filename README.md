@@ -4,7 +4,7 @@ A Timeline object can hold multiple properties with keyframes. ex. position, rot
 
 It builds on top of [`keyframes`](https://github.com/mattdesl/keyframes), but does not expose Keyframes library to user - user only needs to provide a minimum amount of necessary data. ex. `{ time, value, ... }`
 
-In development, and may not work properly.
+In development, and breaking changes are expected in the future.
 
 ## Installation
 
@@ -105,9 +105,12 @@ toJSON(): string;
 
 ## To Dos
 
+- add more examples
+  - how to add keyframes
+  - how to import and export
 - implement the rest of the methods from `keyframes` package
 - add a separate `.d.ts` for `keyframes` JS package, or, create a TS version of the keyframes package as a `class`.
-- throw errors or return null or guard against?
+- throw errors or return null or guard against them?
 
 ## License
 
