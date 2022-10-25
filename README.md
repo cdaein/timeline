@@ -64,17 +64,29 @@ console.log(v2); // 6.25
 
 ```ts
 constructor(propOrProps?: InputProp | InputProp[]);
+
 propExists(propName: string): boolean;
+
 addKeyframe(propName: string, newKey: Keyframe): void;
+
 addKeyframes(propName: string, ...newKeys: Keyframe[]): void;
+
 getKeyframe(propName: string, timeStamp: number): Keyframe;
+
 getKeyframes(propName: string): Keyframe[];
+
 value(propName: string, timeStamp: number, interpolator?: Interpolator): any;
+
 addProperty(propName: string, ...newKeys: Keyframe[]): void;
+
 removeKeyframes(propName: string, index: number, howmany: number): void;
+
 nearest(propName: string, timeStamp: number, radius?: number): Keyframe;
+
 nearestIndex(propName: string, timeStamp: number, radius?: number): number;
+
 next(propName: string, timeStamp: number): Keyframe;
+
 previous(propName: string, timeStamp: number): Keyframe;
 ```
 
