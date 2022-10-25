@@ -253,6 +253,49 @@ class Timeline {
         }
         return prev;
     }
+    // get(propName: string, timeStamp: number) {
+    //   return this.nearest(propName, timeStamp, 0);
+    // }
+    // getIndex(propName: string, timeStamp: number) {
+    //   return this.nearestIndex(propName, timeStamp, 0);
+    // }
+    /**
+     * uses fetch API to load JSON file and convert to new Timeline object
+     * @param file file path
+     * @returns new Timeline object
+     */
+    static fromJSON(file) {
+        return fetch(file)
+            .then((res) => res.json())
+            .then((data) => {
+            // 2. set timeline name
+            const name = data.name;
+            // 3. set properties
+            const properties = [];
+            for (let i = 0; i < data.properties.length; i++) {
+                const prop = data.properties[i];
+                properties.push(prop);
+            }
+            return new Timeline(name, properties);
+        })
+            .catch((e) => {
+            console.error(`Could not load JSON file: ${e.message}`);
+        });
+    }
+    /**
+     * creates a new Timeline object from data object
+     * @param data object { name, properties[] }
+     * @returns new Timeline object
+     */
+    static from(data) {
+        const name = data.name;
+        const properties = data.properties;
+        return new Timeline(name, properties);
+    }
+    // TODO: implement
+    toJSON() {
+        return "";
+    }
 }
 exports.default = Timeline;
 //# sourceMappingURL=index.js.map

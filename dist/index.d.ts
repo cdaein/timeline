@@ -164,6 +164,22 @@ export default class Timeline {
      * @returns keyframe object { time, value, .. }
      */
     previous(propName: string, timeStamp: number): Keyframe;
+    /**
+     * uses fetch API to load JSON file and convert to new Timeline object
+     * @param file file path
+     * @returns new Timeline object
+     */
+    static fromJSON(file: string): Promise<void | Timeline>;
+    /**
+     * creates a new Timeline object from data object
+     * @param data object { name, properties[] }
+     * @returns new Timeline object
+     */
+    static from(data: {
+        name: string;
+        properties: InputProp[];
+    }): Timeline;
+    toJSON(): string;
 }
 export {};
 //# sourceMappingURL=index.d.ts.map

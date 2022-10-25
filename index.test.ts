@@ -201,6 +201,9 @@ describe("value()", () => {
   test("returns clamped value if outside timeStamp range", () => {
     expect(tl.value("position", 2, linear)).toEqual(10);
   });
+  test("interpolates array value", () => {
+    // TODO
+  });
 });
 
 describe("addProperty()", () => {
@@ -374,3 +377,10 @@ describe("previous()", () => {
 //     // expect().toEqual()
 //   });
 // });
+
+describe("fromJSON()", () => {
+  test("creates a new Timeline object from JSON file", () => {
+    // TODO
+    // expect().toEqual()
+  });
+});

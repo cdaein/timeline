@@ -16,7 +16,37 @@
  *
  */
 
-const data = [
+export const single = {
+  name: "circle-1",
+  properties: [
+    {
+      name: "position",
+      keyframes: [
+        { time: 0, value: [500, 100], ease: "hold" },
+        { time: 1, value: [300, 300], ease: "expoIn" },
+        { time: 2, value: [300, 500], ease: "quadInOut" },
+      ],
+    },
+    {
+      name: "lineWidth",
+      keyframes: [
+        { time: 0, value: 1 },
+        { time: 2, value: 20 },
+        { time: 3, value: 4 },
+      ],
+    },
+    {
+      name: "strokeColor",
+      keyframes: [
+        { time: 0, value: [0.7, 1, 1] },
+        { time: 1, value: [0, 1, 1], ease: "expoIn" },
+        { time: 2, value: [0.2, 1, 1], ease: "expoIn" },
+      ],
+    },
+  ],
+};
+
+export const multiple = [
   {
     name: "circle-1",
     properties: [
@@ -112,5 +142,3 @@ const data = [
     ],
   },
 ];
-
-export default data;
