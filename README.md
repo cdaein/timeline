@@ -20,7 +20,7 @@ import Timeline from "@daeinc/timeline";
 
 ## Examples
 
-Pass a single property object (`{name, keyframes}``) or an array of property objects:
+Pass a single property object (`{name, keyframes}`) or an array of property objects:
 
 ```js
 const tl = new Timeline({
