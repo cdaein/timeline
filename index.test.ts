@@ -1,7 +1,6 @@
 const { describe, test, expect } = require("@jest/globals");
 import Timeline from "./index";
 import type { Interpolator } from "./index";
-const ease = require("./ease").default;
 import { mix } from "@daeinc/math";
 
 const prop1 = { name: "position", keyframes: [] };
