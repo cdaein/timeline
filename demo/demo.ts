@@ -29,6 +29,7 @@ const main = async () => {
   console.log("JSON to Timeline", val);
 
   const backToJson = tl2.toJSON();
+  console.log(backToJson)
   const tl3 = Timeline.from(JSON.parse(backToJson));
   const v3 = tl3.value("position", 0.5);
   console.log("JSON to Timeline to JSON to Timeline", v3);
