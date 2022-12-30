@@ -40,7 +40,7 @@ interface InputProp extends Prop {
 interface InternalProp extends Prop {
     keyframes: KeyframesFull;
 }
-export declare type Interpolator = (a: Keyframe, b: Keyframe, t: number, out?: any[]) => any;
+export type Interpolator = (a: Keyframe, b: Keyframe, t: number, out?: any[]) => any;
 export default class Timeline {
     name: string;
     properties: InternalProp[];
