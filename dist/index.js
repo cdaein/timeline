@@ -1,4 +1,3 @@
-"use strict";
 /**
  * TODO:
  * - use unwrapArrayOfObject() in a method??
@@ -7,9 +6,10 @@
  *
  * /// <reference path="keyframes.d.ts"/>
  */
-Object.defineProperty(exports, "__esModule", { value: true });
 const Keyframes = require("keyframes");
-class Timeline {
+export default class Timeline {
+    name;
+    properties;
     /**
      * @param propOrProps a single or multiple properties. ex. { name: 'circle', keyframes: {time, value} }
      * @returns Timeline object
@@ -307,5 +307,4 @@ class Timeline {
         return JSON.stringify({ name: this.name, properties: inputProps });
     }
 }
-exports.default = Timeline;
 //# sourceMappingURL=index.js.map
