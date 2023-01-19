@@ -1,5 +1,9 @@
 # Changelog
 
+## `0.4.0`
+
+updated build to `esnext`
+
 ## `0.3.0`
 
 added `fromJSON()`, `toJSON()`, `from()` methods
