@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "rootDir": "./",
-    "moduleResolution": "node",
-    "declaration": true,
-    "declarationMap": true,
-
-    "sourceMap": true,
-    "outDir": "./dist",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "moduleResolution": "Node",
     "strict": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
     "skipLibCheck": true
   },
-  "exclude": ["./*.test.ts", "./dist", "./demo"]
+  "exclude": ["demo", "./*.test.ts"]
 }
