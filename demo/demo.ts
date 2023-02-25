@@ -1,7 +1,7 @@
 import Timeline from "../index";
 import { lerp } from "@daeinc/math";
-import { interpolateArray } from "@daeinc/array";
-import type { Keyframe } from "../index";
+// import { interpolateArray } from "@daeinc/array";
+import type { Frame } from "../index";
 import { single, multiple } from "./data";
 
 const tl = new Timeline("my-timeline", {
@@ -12,24 +12,25 @@ const tl = new Timeline("my-timeline", {
   ],
 });
 
+// without interpolator
 const v1 = tl.value("position", 0.5);
-console.log(v1); // 7.5
+console.assert(v1 === 7.5); // 7.5
 
-const easeInQuad = (a: Keyframe, b: Keyframe, t: number) => {
-  return lerp(a.value, b.value, t * t);
+const easeInQuad = (a: Frame, b: Frame, t: number) => {
+  return lerp(a.value as number, b.value as number, t * t);
 };
 
+// with interpolator
 const v2 = tl.value("position", 0.5, easeInQuad);
-console.log(v2); // 6.25
+console.assert(v2 === 6.25); // 6.25
 
-// this is a workaround due to top-level await error.
 const main = async () => {
   const tl2 = (await Timeline.fromJSON("./single.json")) as Timeline;
   const val = tl2.value("position", 0.5);
-  console.log("JSON to Timeline", val);
+  console.log("JSON to Timeline", val); // [400, 200]
 
   const backToJson = tl2.toJSON();
-  console.log(backToJson)
+  console.log(backToJson);
   const tl3 = Timeline.from(JSON.parse(backToJson));
   const v3 = tl3.value("position", 0.5);
   console.log("JSON to Timeline to JSON to Timeline", v3);

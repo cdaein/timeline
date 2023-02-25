@@ -1,46 +1,10 @@
 /**
  * TODO:
  * - use unwrapArrayOfObject() in a method??
- * - Type names are still confusing..
- *   - Keyframe => TimeValue (more direct)
- *
- * /// <reference path="keyframes.d.ts"/>
  */
 
-const Keyframes = require("keyframes");
-
-// Keyframes object is what all methods are called upon
-// it is *NOT* an array of Keyframe type
-// REVIEW: consider creating a separate d.ts declaration file for the library.
-interface KeyframesFull {
-  nearest(timeStamp: number, radius?: number): Keyframe;
-  nearestIndex(timeStamp: number, radius?: number): number;
-  get(timeStamp: number): Keyframe;
-  getIndex(timeStamp: number): number;
-  value(timeStamp: number, interpolator?: Interpolator, out?: any): any;
-  next(timeStamp: number): Keyframe;
-  previous(timeStamp: number): Keyframe;
-  add(frame: Keyframe): any;
-  splice(index: number, howmany: number, ...itemN: Keyframe[]): void;
-  sort(): void;
-  clear(): void;
-  frames: Keyframe[];
-  count: number;
-  interpolation(
-    time: number
-  ): [
-    startFrameIndex: number,
-    endFrameIndex: number,
-    interpolationFactor: number
-  ];
-}
-
-// Keyframe simple object { time, value, ease, ... }
-export interface Keyframe {
-  time: number;
-  value: any | any[]; // usually number or number[] but could be {x, y}, etc.
-  [name: string]: any;
-}
+import Keyframes, { type Frame, Interpolator } from "@daeinc/keyframes";
+export type { Frame, Interpolator };
 
 // base Prop
 interface Prop {
@@ -48,20 +12,12 @@ interface Prop {
 }
 // provided by user. simple Keyframe type
 interface InputProp extends Prop {
-  keyframes: Keyframe[];
+  keyframes: Frame[];
 }
 // InputProp must be converted to InternalProp be internally used as it uses Keyframes library object
 interface InternalProp extends Prop {
-  keyframes: KeyframesFull;
+  keyframes: Keyframes;
 }
-
-// not sure how I feel about 'any' here...
-export type Interpolator = (
-  a: Keyframe,
-  b: Keyframe,
-  t: number,
-  out?: any[]
-) => any;
 
 export default class Timeline {
   name: string;
@@ -79,13 +35,13 @@ export default class Timeline {
         // InputProp[]
         this.properties = propOrProps.map((prop) => {
           const name = prop.name;
-          const keyframes = this._convertToKeyframesFull(prop.keyframes);
+          const keyframes = this._convertToKeyframesObj(prop.keyframes);
           return { name, keyframes };
         });
       } else {
         // InputProp
         const name = propOrProps.name;
-        const keyframes = this._convertToKeyframesFull(propOrProps.keyframes);
+        const keyframes = this._convertToKeyframesObj(propOrProps.keyframes);
         this.properties = [{ name, keyframes }];
       }
     } else {
@@ -94,11 +50,11 @@ export default class Timeline {
     }
   }
 
-  _convertToKeyframesFull(arr: Keyframe[]): KeyframesFull {
-    return Keyframes(arr);
+  _convertToKeyframesObj(arr: Frame[]): Keyframes {
+    return new Keyframes(arr);
   }
 
-  _convertToKeyframesInput(data: KeyframesFull): Keyframe[] {
+  _convertToFrames(data: Keyframes): Frame[] {
     return data.frames;
   }
 
@@ -128,10 +84,10 @@ export default class Timeline {
    * @param propName name of property ie. "position", "size"
    * @param newKey { time, value, ease, ... }
    */
-  addKeyframe(propName: string, newKey: Keyframe) {
+  addKeyframe(propName: string, newKey: Frame) {
     if (this.propExists(propName)) {
       // keys.add() simply pushes and doesn't check for timeStamp duplicates.
-      const keys = this.getKeyframesFull(propName);
+      const keys = this.getKeyframesObject(propName);
       const existingIndex = keys.getIndex(newKey.time);
       if (existingIndex === -1) {
         keys.add(newKey);
@@ -141,7 +97,7 @@ export default class Timeline {
     } else {
       this.properties.push({
         name: propName,
-        keyframes: Keyframes(newKey ? [newKey] : []),
+        keyframes: new Keyframes(newKey ? [newKey] : []),
       });
     }
   }
@@ -151,9 +107,9 @@ export default class Timeline {
    * @param propName
    * @param ...newKeys
    */
-  addKeyframes(propName: string, ...newKeys: Keyframe[]) {
-    for (let i = 1; i < arguments.length; i++) {
-      this.addKeyframe(propName, arguments[i]);
+  addKeyframes(propName: string, ...newKeys: Frame[]) {
+    for (let i = 0; i < newKeys.length; i++) {
+      this.addKeyframe(propName, newKeys[i]);
     }
   }
 
@@ -163,19 +119,17 @@ export default class Timeline {
    * @param timeStamp
    * @returns Keyframe { time, value }
    */
-  getKeyframe(propName: string, timeStamp: number): Keyframe {
+  getFrame(propName: string, timeStamp: number): Frame {
     const prop = this._getProperty(propName);
     if (prop !== undefined) {
       const key = prop.keyframes.get(timeStamp);
       if (key !== null) {
         return key;
       } else {
-        throw new Error(
-          `Timeline.getKeyframe(): key does not exist at timeStamp: ${timeStamp}`
-        );
+        throw new Error(`key does not exist at timeStamp: ${timeStamp}`);
       }
     }
-    throw new Error(`Timeline.getKeyframe(): cannot find prop: ${propName}`);
+    throw new Error(`cannot find prop: ${propName}`);
   }
 
   /**
@@ -183,12 +137,12 @@ export default class Timeline {
    * @param propName
    * @returns keyframes array [{time, value}, {time, value}, ...]
    */
-  getKeyframes(propName: string): Keyframe[] {
+  getFrames(propName: string): Frame[] {
     const prop = this._getProperty(propName);
     if (prop !== undefined) {
       return prop.keyframes.frames;
     }
-    throw new Error(`Timeline.getKeyframes(): cannot find prop: ${propName}`);
+    throw new Error(`cannot find prop: ${propName}`);
   }
 
   /**
@@ -196,12 +150,12 @@ export default class Timeline {
    * @param propName
    * @returns keyframes object
    */
-  getKeyframesFull(propName: string): KeyframesFull {
+  getKeyframesObject(propName: string): Keyframes {
     const prop = this._getProperty(propName);
     if (prop !== undefined) {
       return prop.keyframes;
     }
-    throw new Error(`Timeline.getKeyframes(): cannot find prop: ${propName}`);
+    throw new Error(`cannot find prop: ${propName}`);
   }
 
   /**
@@ -222,6 +176,9 @@ export default class Timeline {
 
   /**
    * calculate value at timestamp with optional easing.
+   *
+   * TODO: how to re-use out array?
+   *
    * @param propName
    * @param timeStamp
    * @param interpolator fn(a, b, t, out?)
@@ -229,7 +186,7 @@ export default class Timeline {
    */
   value(propName: string, timeStamp: number, interpolator?: Interpolator): any {
     // check interpolator type - number, array, 2d array
-    return this.getKeyframesFull(propName).value(timeStamp, interpolator);
+    return this.getKeyframesObject(propName).value(timeStamp, interpolator);
   }
 
   /**
@@ -251,17 +208,17 @@ export default class Timeline {
    * @param propName name of property. ex. "position"
    * @param newKeys can take optional keyframe(s)
    */
-  addProperty(propName: string, ...newKeys: Keyframe[]) {
+  addProperty(propName: string, ...newKeys: Frame[]) {
     if (!this.propExists(propName)) {
       this.properties.push({
         name: propName,
-        keyframes: Keyframes(newKeys ? [newKeys[0]] : []),
+        keyframes: new Keyframes(newKeys ? [newKeys[0]] : []),
       });
       for (let i = 2; i < arguments.length; i++) {
         this.addKeyframe(propName, arguments[i]);
       }
     } else {
-      throw new Error(`addProperty(): property: ${propName} already exists`);
+      throw new Error(`property: ${propName} already exists`);
     }
   }
 
@@ -287,7 +244,7 @@ export default class Timeline {
    * @param howmany how many to remove
    */
   removeKeyframes(propName: string, index: number, howmany: number) {
-    const keys = this.getKeyframesFull(propName);
+    const keys = this.getKeyframesObject(propName);
     keys.splice(index, howmany);
   }
 
@@ -297,10 +254,10 @@ export default class Timeline {
   // }
 
   nearest(propName: string, timeStamp: number, radius?: number) {
-    return this.getKeyframesFull(propName).nearest(timeStamp, radius);
+    return this.getKeyframesObject(propName).nearest(timeStamp, radius);
   }
   nearestIndex(propName: string, timeStamp: number, radius?: number) {
-    return this.getKeyframesFull(propName).nearestIndex(timeStamp, radius);
+    return this.getKeyframesObject(propName).nearestIndex(timeStamp, radius);
   }
 
   /**
@@ -310,7 +267,7 @@ export default class Timeline {
    * @returns keyframe object { time, value, .. }
    */
   next(propName: string, timeStamp: number) {
-    const next = this.getKeyframesFull(propName).next(timeStamp);
+    const next = this.getKeyframesObject(propName).next(timeStamp);
     if (next === null) {
       return this.nearest(propName, timeStamp);
     }
@@ -324,7 +281,7 @@ export default class Timeline {
    * @returns keyframe object { time, value, .. }
    */
   previous(propName: string, timeStamp: number) {
-    const prev = this.getKeyframesFull(propName).previous(timeStamp);
+    const prev = this.getKeyframesObject(propName).previous(timeStamp);
     if (prev === null) {
       return this.nearest(propName, timeStamp);
     }
@@ -383,7 +340,7 @@ export default class Timeline {
       (prop) =>
         ({
           name: prop.name,
-          keyframes: this._convertToKeyframesInput(prop.keyframes),
+          keyframes: this._convertToFrames(prop.keyframes),
         } as InputProp)
     );
     return JSON.stringify({ name: this.name, properties: inputProps });
