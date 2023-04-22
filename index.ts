@@ -190,7 +190,7 @@ export default class Timeline {
     propName: string,
     timeStamp: number,
     interpolator?: Interpolator,
-    out?: any | any[]
+    out?: any[]
   ): unknown {
     // check interpolator type - number, array, 2d array
     return this.getKeyframesObject(propName).value(

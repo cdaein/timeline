@@ -1,6 +1,7 @@
 import { describe, test, expect } from "vitest";
 import Timeline, { Frame, Interpolator } from "./index";
 import { mix } from "@daeinc/math";
+import { interpolateArray } from "@daeinc/array";
 
 const prop1 = { name: "position", keyframes: [] };
 const prop2 = {
@@ -201,6 +202,30 @@ describe("value()", () => {
   });
   test("interpolates array value", () => {
     // TODO
+  });
+  test("reuse out array", () => {
+    const tl = new Timeline(name);
+    tl.addKeyframes(
+      "position",
+      {
+        time: 0,
+        value: [0, 0],
+      },
+      {
+        time: 1,
+        value: [10, 10],
+      }
+    );
+    const out = [0, 0];
+    tl.value(
+      "position",
+      0.5,
+      (a: Frame, b: Frame, t: number, out?: number[]) => {
+        return interpolateArray(a.value, b.value, a.ease ? a.ease(t) : t, out);
+      },
+      out
+    );
+    expect(out).toStrictEqual([5, 5]);
   });
 });
 
