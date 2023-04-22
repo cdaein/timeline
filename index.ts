@@ -186,12 +186,12 @@ export default class Timeline {
    * @param out array to mutate
    * @returns
    */
-  value(
+  value<T>(
     propName: string,
     timeStamp: number,
     interpolator?: Interpolator,
-    out?: any[]
-  ): unknown {
+    out?: T[]
+  ): T[] {
     // check interpolator type - number, array, 2d array
     return this.getKeyframesObject(propName).value(
       timeStamp,
