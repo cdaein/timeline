@@ -1,5 +1,6 @@
 /**
  * TODO:
+ * - by default, it should re-use array when interpolating
  * - use unwrapArrayOfObject() in a method??
  */
 
@@ -182,11 +183,21 @@ export default class Timeline {
    * @param propName
    * @param timeStamp
    * @param interpolator fn(a, b, t, out?)
+   * @param out array to mutate
    * @returns
    */
-  value(propName: string, timeStamp: number, interpolator?: Interpolator): any {
+  value(
+    propName: string,
+    timeStamp: number,
+    interpolator?: Interpolator,
+    out?: any | any[]
+  ): unknown {
     // check interpolator type - number, array, 2d array
-    return this.getKeyframesObject(propName).value(timeStamp, interpolator);
+    return this.getKeyframesObject(propName).value(
+      timeStamp,
+      interpolator,
+      out
+    );
   }
 
   /**
